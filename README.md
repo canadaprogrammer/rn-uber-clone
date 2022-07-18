@@ -144,7 +144,7 @@
 
 - Add `HomeScreen` on `App.js`
 
-## Nav Option
+## Nav Options
 
 - ```bash
   yarn add react-native-elements
@@ -152,7 +152,7 @@
   yarn add react-native-safe-area-context
   ```
 
-- Create `/components/NavOption.js`
+- Create `/components/NavOptions.js`
 
   - ```js
     import {
@@ -235,7 +235,72 @@
         ...
     ```
 
----
+## Implement React Native Navigation
+
+- ```bash
+  yarn add @react-navigation/native
+  expo install react-native-screens react-native-safe-area-context
+  yarn add @react-navigation/native-stack
+  ```
+
+- On `App.js`
+
+  - ```js
+    import { NavigationContainer } from '@react-navigation/native';
+    import { createNativeStackNavigator } from '@react-navigation/native-stack';
+    ...
+        <Provider store={store}>
+          <NavigationContainer>
+            <SafeAreaProvider>
+              <Stack.Navigator>
+                <Stack.Screen
+                  name='HomeScreen'
+                  component={HomeScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name='MapScreen'
+                  component={MapScreen}
+                  options={{ headerShown: false }}
+                />
+              </Stack.Navigator>
+            </SafeAreaProvider>
+          </NavigationContainer>
+        </Provider>
+      ...
+    ```
+
+- On `/components/NavOptions.js`
+
+  - ```js
+    import { useNavigation } from '@react-navigation/native';
+    ...
+    const NavOptions = () => {
+      const navigation = useNavigation();
+      ...
+            <TouchableOpacity
+              ...
+              onPress={() => navigation.navigate(item.screen)}
+            >
+              ...
+    ```
+
+- Create `/screens/MapScreen.js`
+
+  - ```js
+    import { Text, SafeAreaView } from 'react-native';
+    import React from 'react';
+
+    const MapScreen = () => {
+      return (
+        <SafeAreaView>
+          <Text>MapScreen</Text>
+        </SafeAreaView>
+      );
+    };
+
+    export default MapScreen;
+    ```
 
 # Tips
 

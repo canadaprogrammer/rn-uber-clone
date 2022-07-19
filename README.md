@@ -28,7 +28,7 @@
     export const navSlice = createSlice({
       name: 'nav',
       initialState,
-      reducer: {
+      reducers: {
         setOrigin: (state, action) => {
           state.origin = action.payload;
         },
@@ -300,6 +300,93 @@
     };
 
     export default MapScreen;
+    ```
+
+## Implement Google Places Autocomplete
+
+- ```bash
+  yarn add react-native-google-places-autocomplete
+  yarn add react-native-dotenv
+  ```
+
+- On `babel.config.js`, add below code to `return`
+
+  - ```js
+    plugins: [
+      [
+        'module:react-native-dotenv',
+        {
+          moduleName: '@env',
+          path: '.env',
+        },
+      ],
+    ],
+    ```
+
+- On `.gitignore`, add `.env`
+
+- On Google Cloud
+
+  1. Create new project
+  2. Go to APIs & Services
+  3. Click Enable APIs and Services
+
+  - Select Places API - Enable
+  - Select Directions API - Enable
+  - Select Distance Matrix API - Enable
+
+  4. Go to Credentials
+
+  - Click Create Credentials
+  - Choose API key
+  - Copy the key
+  - Edit API key
+    - Check Restrict key
+    - Select Directions API, Distance Matrix API and Places API
+
+- Create `.env` and write `GOOGLE_API_KEY = "paste the API key here"`
+
+- On `screens/HomeScreen.js`
+
+  - ```js
+    ...
+    import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+    import { GOOGLE_API_KEY } from '@env';
+    import { useDispatch } from 'react-redux';
+    import { setDestination, setOrigin } from '../slices/navSlice';
+
+    const HomeScreen = () => {
+      const dispatch = useDispatch();
+      ...
+            <GooglePlacesAutocomplete
+              placeholder='Where from?'
+              styles={{
+                container: {
+                  flex: 0,
+                },
+                textInput: {
+                  fontSize: 18,
+                },
+              }}
+              fetchDetails={true}
+              onPress={(data, details = null) => {
+                dispatch(
+                  setOrigin({
+                    location: details.geometry.location,
+                    description: data.description,
+                  })
+                );
+                dispatch(setDestination(null));
+              }}
+              returnKeyType={'search'}
+              enablePoweredByContainer={false}
+              minLength={2}
+              query={{ key: GOOGLE_API_KEY, language: 'en' }}
+              nearbyPlacesAPI='GooglePlacesSearch'
+              debounce={400}
+            />
+            <NavOptions />
+          ...
     ```
 
 # Tips

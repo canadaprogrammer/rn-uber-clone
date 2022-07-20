@@ -440,6 +440,30 @@
     export default Map;
     ```
 
+## Map Component
+
+- On `/components/Map.js`
+
+  - ```js
+    ...
+    import { useSelector } from 'react-redux';
+    import { selectOrigin } from '../slices/navSlice';
+
+    const Map = () => {
+      const origin = useSelector(selectOrigin);
+      console.log(origin);
+      return (
+        <MapView
+          style={tw`flex-1`}
+          initialRegion={{
+            latitude: origin?.location?.lat,
+            longitude: origin?.location?.lng,
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
+          }}
+          ...
+    ```
+
 # Tips
 
 - Shortcut `rnfes`: reactNativeFunctionalExportComponentWithStyle

@@ -389,6 +389,57 @@
           ...
     ```
 
+## Map Screen
+
+- `yarn add react-native-maps`
+
+- On `/screens/MapScreen.js`
+
+  - ```js
+    import { Text, View } from 'react-native';
+    import React from 'react';
+    import tw from 'tailwind-react-native-classnames';
+    import Map from '../components/Map';
+
+    const MapScreen = () => {
+      return (
+        <View>
+          <Text>MapScreen</Text>
+          <View style={tw`h-1/2`}>
+            <Map />
+          </View>
+          <View style={tw`h-1/2`}></View>
+        </View>
+      );
+    };
+
+    export default MapScreen;
+    ```
+
+- Create `/components/Map.js`
+
+  - ```js
+    import React from 'react';
+    import MapView from 'react-native-maps';
+    import tw from 'tailwind-react-native-classnames';
+
+    const Map = () => {
+      return (
+        <MapView
+          style={tw`flex-1`}
+          initialRegion={{
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
+      );
+    };
+
+    export default Map;
+    ```
+
 # Tips
 
 - Shortcut `rnfes`: reactNativeFunctionalExportComponentWithStyle

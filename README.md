@@ -509,6 +509,131 @@
                 ...
     ```
 
+## Add ToGo Section to Map Screen
+
+- Create `/components/NavigateCard.js`
+
+  - ```js
+    import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+    import React from 'react';
+    import tw from 'tailwind-react-native-classnames';
+    import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+    import { GOOGLE_API_KEY } from '@env';
+    import { useDispatch } from 'react-redux';
+    import { setDestination } from '../slices/navSlice';
+    import { useNavigation } from '@react-navigation/native';
+
+    const NavigateCard = () => {
+      const dispatch = useDispatch();
+      const navigation = useNavigation();
+      return (
+        <SafeAreaView style={tw`bg-white flex-1`}>
+          <Text style={tw`text-center py-5 text-xl`}>Good Morning!!</Text>
+          <View style={tw`border-t border-gray-200 flex-shrink`}>
+            <View>
+              <GooglePlacesAutocomplete
+                styles={toInputBoxStyles}
+                placeholder='Where to?'
+                nearbyPlacesAPI='GooglePlacesSearch'
+                debounce={400}
+                fetchDetails={true}
+                enablePoweredByContainer={false}
+                query={{
+                  key: GOOGLE_API_KEY,
+                  language: 'en',
+                }}
+                returnKeyType={'search'}
+                minLength={2}
+                onPress={(data, details = null) => {
+                  dispatch(
+                    setDestination({
+                      location: details.geometry.location,
+                      description: data.description,
+                    })
+                  );
+                  navigation.navigate('RideOptionsCard');
+                }}
+              />
+            </View>
+          </View>
+        </SafeAreaView>
+      );
+    };
+
+    export default NavigateCard;
+
+    const toInputBoxStyles = StyleSheet.create({
+      container: {
+        backgroundColor: 'white',
+        paddingTop: 20,
+        flex: 0,
+      },
+      textInput: {
+        backgroundColor: '#DDDDDF',
+        borderRadius: 0,
+        fontSize: 18,
+      },
+      textInputContainer: {
+        paddingHorizontal: 20,
+        paddingBottom: 0,
+      },
+    });
+    ```
+
+- Create `/components/RideOptionsCard.js`
+
+  - ```js
+    import { SafeAreaView, Text } from 'react-native';
+    import React from 'react';
+
+    const RideOptionsCard = () => {
+      return (
+        <SafeAreaView>
+          <Text>RideOptionsCard</Text>
+        </SafeAreaView>
+      );
+    };
+
+    export default RideOptionsCard;
+    ```
+
+- On `/screens/MapScreen.js`
+
+  - ```js
+    ...
+    import { createNativeStackNavigator } from '@react-navigation/native-stack';
+    import NavigateCard from '../components/NavigateCard';
+    import RideOptionsCard from '../components/RideOptionsCard';
+
+    const MapScreen = () => {
+      const Stack = createNativeStackNavigator();
+      return (
+        <View>
+          <View style={tw`h-1/3`}>
+            <Map />
+          </View>
+          <View style={tw`h-2/3`}>
+            <Stack.Navigator>
+              <Stack.Screen
+                name='NavigateCard'
+                component={NavigateCard}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name='RideOptionsCard'
+                component={RideOptionsCard}
+                options={{
+                  headerShown: false,
+                }}
+              />
+            </Stack.Navigator>
+          </View>
+        </View>
+      ...
+    ```
+
 # Tips
 
 - Shortcut `rnfes`: reactNativeFunctionalExportComponentWithStyle

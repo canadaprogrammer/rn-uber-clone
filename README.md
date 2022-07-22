@@ -248,7 +248,10 @@
   - ```js
     import { NavigationContainer } from '@react-navigation/native';
     import { createNativeStackNavigator } from '@react-navigation/native-stack';
-    ...
+
+    export default function App() {
+      const Stack = createNativeStackNavigator();
+      ...
         <Provider store={store}>
           <NavigationContainer>
             <SafeAreaProvider>
@@ -462,6 +465,29 @@
             longitudeDelta: 0.005,
           }}
           ...
+    ```
+
+## Add Pin to Map
+
+- On `/components/Map.js`
+
+  - ```js
+    import MapView, { Marker } from 'react-native-maps';
+    ...
+        >
+          {origin?.location && (
+            <Marker
+              coordinate={{
+                latitude: origin.location.lat,
+                longitude: origin.location.lng,
+              }}
+              title='Origin'
+              description={origin.description}
+              identifier='origin'
+            />
+          )}
+        </MapView>
+      ...
     ```
 
 # Tips

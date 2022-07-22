@@ -490,6 +490,25 @@
       ...
     ```
 
+## Modify Nav Options for being disabled
+
+- On `/components/NavOptions.js`
+
+  - ```js
+    import { useSelector } from 'react-redux';
+    import { selectOrigin } from '../slices/navSlice';
+    ...
+    const NavOptions = () => {
+      const origin = useSelector(selectOrigin);
+      ...
+            <TouchableOpacity
+              ...
+              disabled={!origin}
+            >
+              <View style={tw`${!origin && 'opacity-20'}`}>
+                ...
+    ```
+
 # Tips
 
 - Shortcut `rnfes`: reactNativeFunctionalExportComponentWithStyle

@@ -641,8 +641,8 @@
 - On `/components/Map.js`
 
   - ```js
-    import React, { useEffect, useRef } from 'react';
     ...
+    import React, { useEffect, useRef } from 'react';
     import { selectDestination, selectOrigin } from '../slices/navSlice';
     import MapViewDirections from 'react-native-maps-directions';
     import { GOOGLE_API_KEY } from '@env';

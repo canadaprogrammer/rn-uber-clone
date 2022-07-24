@@ -750,6 +750,27 @@
 
 - On `/screens/HomeScreen.js` and `/components/NavigationCard.js`, add `NavFavorites`
 
+## Keyboard Avoiding View
+
+- Turn on toggle software keyboard: `cmd + K` on the iOS simulator
+
+  - Find an issue hiding contents by keyboard
+
+- On `App.js`
+
+  - ```js
+    import { KeyboardAvoidingView, Platform } from 'react-native';
+    ...
+            <SafeAreaProvider>
+              <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? -64 : 0}
+              >
+                <Stack.Navigator>
+                  ...
+    ```
+
 ---
 
 ## Tips

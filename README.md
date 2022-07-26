@@ -963,6 +963,54 @@
               ...
     ```
 
+## Final Modification
+
+- On `/components/RideOptionsCard.js`, add a condition for no results
+
+  - ```js
+    ...
+            <Text style={tw`text-center py-5 text-xl`}>
+              Select a Ride -{' '}
+              {travelTimeInformation?.distance?.text ?? 'No Results'}
+            </Text>
+          ...
+                <Text style={tw`text-lg`}>
+                  {travelTimeInformation?.duration?.value
+                    ? new Intl.NumberFormat('en-CA', {
+                        style: 'currency',
+                        currency: 'CAD',
+                      }).format(
+                        (travelTimeInformation?.duration?.value *
+                          SURGE_CHARGE_RATE *
+                          multiplier) /
+                          100
+                      )
+                    : '-'}
+                </Text>
+              </TouchableOpacity>
+            ...
+    ```
+
+- On `/components/MapScreen.js`, add a menu button for going to Home Screen
+
+  - ```js
+    ...
+    import { TouchableOpacity, View } from 'react-native';
+    import { Icon } from 'react-native-elements';
+    import { useNavigation } from '@react-navigation/native';
+
+    const MapScreen = () => {
+      const Stack = createNativeStackNavigator();
+      const navigation = useNavigation();
+      return (
+        <View>
+          <TouchableOpacity
+            style={tw`absolute top-12 left-8 bg-gray-100 z-50 p-3 rounded-full shadow-lg`}
+            onPress={() => navigation.navigate('HomeScreen')}
+          >
+          ...
+    ```
+
 ---
 
 ## Tips

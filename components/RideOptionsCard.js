@@ -50,7 +50,8 @@ const RideOptionsCard = () => {
           <Icon name='chevron-left' type='fontawesome' />
         </TouchableOpacity>
         <Text style={tw`text-center py-5 text-xl`}>
-          Select a Ride - {travelTimeInformation?.distance.text}
+          Select a Ride -{' '}
+          {travelTimeInformation?.distance?.text ?? 'No Results'}
         </Text>
       </View>
       <FlatList
@@ -60,6 +61,7 @@ const RideOptionsCard = () => {
         renderItem={({ item: { id, title, multiplier, image }, item }) => (
           <TouchableOpacity
             onPress={() => setSelected(item)}
+            disabled={!travelTimeInformation?.duration?.text}
             style={tw`flex-row justify-between items-center px-3 ${
               id === selected?.id && 'bg-gray-200'
             }`}
@@ -70,18 +72,20 @@ const RideOptionsCard = () => {
             />
             <View style={tw`-ml-6`}>
               <Text style={tw`text-xl font-semibold`}>{title}</Text>
-              <Text>{travelTimeInformation?.duration.text} Travel time</Text>
+              <Text>{travelTimeInformation?.duration?.text} Travel time</Text>
             </View>
             <Text style={tw`text-lg`}>
-              {new Intl.NumberFormat('en-CA', {
-                style: 'currency',
-                currency: 'CAD',
-              }).format(
-                (travelTimeInformation?.duration.value *
-                  SURGE_CHARGE_RATE *
-                  multiplier) /
-                  100
-              )}
+              {travelTimeInformation?.duration?.value
+                ? new Intl.NumberFormat('en-CA', {
+                    style: 'currency',
+                    currency: 'CAD',
+                  }).format(
+                    (travelTimeInformation?.duration?.value *
+                      SURGE_CHARGE_RATE *
+                      multiplier) /
+                      100
+                  )
+                : '-'}
             </Text>
           </TouchableOpacity>
         )}

@@ -938,6 +938,31 @@
                   ...
     ```
 
+## Price Calculation
+
+- `Intl.NumberFormat` object enables language-sensitive number formatting
+
+- On `/components/RideOptionsCard.js`
+
+  - ```js
+    ...
+    const SURGE_CHARGE_RATE = 1.5;
+    ...
+                <Text style={tw`text-lg`}>
+                  {new Intl.NumberFormat('en-CA', {
+                    style: 'currency',
+                    currency: 'CAD',
+                  }).format(
+                    (travelTimeInformation?.duration.value *
+                      SURGE_CHARGE_RATE *
+                      multiplier) /
+                      100
+                  )}
+                </Text>
+              </TouchableOpacity>
+              ...
+    ```
+
 ---
 
 ## Tips

@@ -32,6 +32,9 @@ const data = [
     image: 'https://links.papareact.com/7pf',
   },
 ];
+
+const SURGE_CHARGE_RATE = 1.5;
+
 const RideOptionsCard = () => {
   const navigation = useNavigation();
   const [selected, setSelected] = useState(null);
@@ -57,7 +60,7 @@ const RideOptionsCard = () => {
         renderItem={({ item: { id, title, multiplier, image }, item }) => (
           <TouchableOpacity
             onPress={() => setSelected(item)}
-            style={tw`flex-row justify-between items-center px-10 ${
+            style={tw`flex-row justify-between items-center px-3 ${
               id === selected?.id && 'bg-gray-200'
             }`}
           >
@@ -69,11 +72,23 @@ const RideOptionsCard = () => {
               <Text style={tw`text-xl font-semibold`}>{title}</Text>
               <Text>{travelTimeInformation?.duration.text} Travel time</Text>
             </View>
-            <Text style={tw`text-xl`}>$22</Text>
+            <Text style={tw`text-lg`}>
+              {new Intl.NumberFormat('en-CA', {
+                style: 'currency',
+                currency: 'CAD',
+              }).format(
+                (travelTimeInformation?.duration.value *
+                  SURGE_CHARGE_RATE *
+                  multiplier) /
+                  100
+              )}
+            </Text>
           </TouchableOpacity>
         )}
       />
-      <View style={tw`z-50 absolute top-96 left-0 right-0`}>
+      <View
+        style={tw`z-50 absolute top-96 left-0 right-0 mt-auto border-t border-gray-200`}
+      >
         <TouchableOpacity
           disabled={!selected}
           style={tw`bg-black py-2 m-3 ${!selected && 'bg-gray-300'}`}

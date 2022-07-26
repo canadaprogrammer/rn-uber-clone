@@ -896,6 +896,48 @@
     export default RideOptionsCard;
     ```
 
+## Travel Time Calculation
+
+- On `/components/Map.js`
+
+  - ```js
+    import { ..., useDispatch } from 'react-redux';
+    import { ..., setTravelTimeInformation } from '../slices/navSlice';
+    ...
+      const dispatch = useDispatch();
+
+      useEffect(() => {
+        if (!origin || !destination) return;
+        const getTravelTime = async () => {
+          fetch(
+            `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin.description}&destinations=${destination.description}&key=${GOOGLE_API_KEY}`
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              dispatch(setTravelTimeInformation(data.rows[0].elements[0]));
+            });
+        };
+        getTravelTime();
+      }, [origin, destination, GOOGLE_API_KEY]);
+      ...
+    ```
+
+- On `/components/RideOptionsCard.js`
+
+  - ```js
+    import { useSelector } from 'react-redux';
+    import { selectTravelTimeInformation } from '../slices/navSlice';
+    ...
+      const travelTimeInformation = useSelector(selectTravelTimeInformation);
+      ...
+            <Text style={tw`text-center py-5 text-xl`}>
+              Select a Ride - {travelTimeInformation?.distance.text}
+            </Text>
+            ...
+                  <Text>{travelTimeInformation?.duration.text} Travel time</Text>
+                  ...
+    ```
+
 ---
 
 ## Tips
